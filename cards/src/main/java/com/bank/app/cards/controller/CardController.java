@@ -3,6 +3,7 @@ package com.bank.app.cards.controller;
 import com.bank.app.cards.constant.CardType;
 import com.bank.app.cards.dto.CardDto;
 import com.bank.app.cards.dto.CardRequestDto;
+import com.bank.app.cards.dto.CardsContactInfoDto;
 import com.bank.app.cards.dto.ResponseDto;
 import com.bank.app.cards.service.ICardService;
 import jakarta.validation.Valid;
@@ -23,9 +24,12 @@ public class CardController {
 
     private final ICardService cardService;
 
+    private final CardsContactInfoDto cardsContactInfoDto;
+
     @Autowired
-    public CardController(ICardService cardService) {
+    public CardController(ICardService cardService, CardsContactInfoDto cardsContactInfoDto) {
         this.cardService = cardService;
+        this.cardsContactInfoDto = cardsContactInfoDto;
     }
 
     @PostMapping
@@ -55,5 +59,10 @@ public class CardController {
             String personalId, @RequestParam CardType cardType) {
         cardService.deleteCard(personalId, cardType);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/cardsInfo")
+    public ResponseEntity<CardsContactInfoDto> getCardsInfo() {
+        return ResponseEntity.status(HttpStatus.OK).body(cardsContactInfoDto);
     }
 }
